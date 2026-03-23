@@ -10,7 +10,7 @@ pipeline { // define CI/CD flow
                 }
             }
 
-            steps { // execute Linux commands below
+            steps { // execute Node.js commands below
                 sh '''
                     ls -la
                     node --version 
