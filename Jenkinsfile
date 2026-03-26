@@ -39,27 +39,24 @@ pipeline { // define CI/CD flow
             }
         }// end of 'Test' stage
 
-        stage('Deploy') {
-            agent {
+        stage('Deploy') {// 'deploy' stage (phase)
+            agent { // use Docker to run the 'Deploy' stage in a container
                 docker {
                     image 'node:22.14.0-alpine'
                     reuseNode true
                 }
             }
             steps {
-            withCredentials([
+            withCredentials([// withCredentials - to securely inject sensitive information (like API tokens) into the build environment without hardcoding them in the Jenkinsfile
                 string(credentialsId: 'NETLIFY_AUTH_TOKEN', variable: 'NETLIFY_AUTH_TOKEN'),
                 string(credentialsId: 'NETLIFY_SITE_ID', variable: 'NETLIFY_SITE_ID')
-        ]) {
-            sh '''
-                echo "Installing Netlify CLI..."
-                npm install -g netlify-cli
-
-                echo "Deploying to Netlify..."
-                netlify deploy --prod --dir=build --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
-            '''
-        }
-    }
-        }// end of 'Deploy' stage
+            ]) {
+                sh '''             
+                    echo "Deploying to Netlify..."
+                    npx netlify-cli deploy --prod --dir=build --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
+                '''
+            }// end of withCredentials
+            } // end of steps
+        } // end of 'Deploy' stage    
     }// end of stages
 } // end of pipeline definition
