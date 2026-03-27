@@ -5,7 +5,8 @@ pipeline { // define CI/CD flow
         stage('Build') { //'build' stage (phase)
             agent { // define agent for this stage - agent is a machine where the code will be built and tested
                 docker { // use Docker to run the 'build' stage in a container
-                    image 'node:alpine' //docker will run my code in a Docker container with Node.js version 22.14.0 on Alpine Linux
+                    image image 'node:lts'
+ //docker will run my code in a Docker container with Node.js version 22.14.0 on Alpine Linux
                     reuseNode true //reuseNode true - to reuse the same container for all stages, so we can share files between stages (like build artifacts)
                 }
             }
@@ -25,7 +26,8 @@ pipeline { // define CI/CD flow
         stage('Test') { // 'test' stage (phase)
             agent {
                 docker {
-                    image 'node:alpine' // use Docker to run the 'Test' stage in a container
+                    image image 'node:lts'
+ // use Docker to run the 'Test' stage in a container
                     reuseNode true // reuse the same container for the 'Test' stage, so we can access the build artifacts from the 'Build' stage (like build/index.html)
                 }
             }
@@ -40,7 +42,8 @@ pipeline { // define CI/CD flow
         stage('Deploy') {// 'deploy' stage (phase)
             agent { // use Docker to run the 'Deploy' stage in a container
                 docker {
-                    image 'node:alpine'
+                    image image 'node:lts'
+
                     reuseNode true
                 }
             }
