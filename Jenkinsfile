@@ -53,7 +53,7 @@ pipeline { // define CI/CD flow
             ]) {
                 sh '''             
                     echo "Deploying to Netlify..."
-                    npx netlify-cli deploy --prod --dir=build --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
+                    npx netlify-cli deploy --prod --dir=build --no-build --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
                 '''
             }// end of withCredentials
             } // end of steps
