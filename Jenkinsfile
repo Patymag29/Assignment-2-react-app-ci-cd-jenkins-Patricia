@@ -4,10 +4,13 @@ pipeline { // define CI/CD flow
     stages { //“Jenkins, execute my pipeline in a container  (Docker) which has Node.js installed”
         stage('Build') { //'build' stage (phase)
             agent { // define agent for this stage - agent is a machine where the code will be built and tested
-                docker { // use Docker to run the 'build' stage in a container
-                    image 'node:22.14.0-alpine' //docker will run my code in a Docker container with Node.js version 22.14.0 on Alpine Linux
-                    reuseNode true //reuseNode true - to reuse the same container for all stages, so we can share files between stages (like build artifacts)
-                }
+                // docker { // use Docker to run the 'build' stage in a container
+                //     image 'node:22.14.0-alpine' //docker will run my code in a Docker container with Node.js version 22.14.0 on Alpine Linux
+                //     reuseNode true //reuseNode true - to reuse the same container for all stages, so we can share files between stages (like build artifacts)
+                // }
+                dockerfile {  // ← MUDAR AQUI: usar Dockerfile em vez de image
+                    filename 'Dockerfile'
+                    reuseNode true
             }
 
             steps { // execute Node.js commands below
