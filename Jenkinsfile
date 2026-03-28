@@ -27,9 +27,13 @@ pipeline { // define CI/CD flow
 
         stage('Test') { // 'test' stage (phase)
             agent {
-                docker {
-                    image 'node:22.14.0-alpine' // use Docker to run the 'Test' stage in a container
-                    reuseNode true // reuse the same container for the 'Test' stage, so we can access the build artifacts from the 'Build' stage (like build/index.html)
+                // docker {
+                //     image 'node:22.14.0-alpine' // use Docker to run the 'Test' stage in a container
+                //     reuseNode true // reuse the same container for the 'Test' stage, so we can access the build artifacts from the 'Build' stage (like build/index.html)
+                // }
+                dockerfile {
+                    filename 'Dockerfile'
+                    reuseNode true
                 }
             }
             steps { 
@@ -42,8 +46,12 @@ pipeline { // define CI/CD flow
 
         stage('Deploy') {// 'deploy' stage (phase)
             agent { // use Docker to run the 'Deploy' stage in a container
-                docker {
-                    image 'node:22.14.0-alpine'
+                // docker {
+                //     image 'node:22.14.0-alpine'
+                //     reuseNode true
+                // }
+                dockerfile {
+                    filename 'Dockerfile'
                     reuseNode true
                 }
             }
