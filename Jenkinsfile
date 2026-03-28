@@ -11,6 +11,7 @@ pipeline { // define CI/CD flow
                 dockerfile {  // ← MUDAR AQUI: usar Dockerfile em vez de image
                     filename 'Dockerfile'
                     reuseNode true
+                }
             }
 
             steps { // execute Node.js commands below
@@ -62,9 +63,10 @@ pipeline { // define CI/CD flow
             ]) {
                 sh '''             
                     echo "Deploying to Production..."
-                    npx netlify-cli deploy --prod --dir=build --no-build --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
+                    netlify deploy --prod --dir=build --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
+                 #   npx netlify-cli deploy --prod --dir=build --no-build --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
                 '''
-            }// end of withCredentials
+               }// end of withCredentials
             } // end of steps
         } // end of 'Deploy' stage    
     }// end of stages
